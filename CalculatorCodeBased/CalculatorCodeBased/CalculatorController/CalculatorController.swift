@@ -1,41 +1,14 @@
 //
-//  ViewController.swift
-//  CalculatorStoryBoardBased
+//  Controller.swift
+//  CalculatorCodeBased
 //
-//  Created by 김윤홍 on 6/21/24.
+//  Created by 김윤홍 on 6/23/24.
 //
+import Foundation
 
-import UIKit
-
-class ViewController: UIViewController {
+class Calculator {
   
-  @IBOutlet weak var text: UILabel!
-  
-  @IBAction func button(_ sender: UIButton) {
-    guard let buttonTitle = sender.titleLabel?.text else { return }
-    var resultLabel = ""
-    
-    switch buttonTitle {
-    case "AC":
-      text.text = "0"
-      
-    case "=":
-      if let intValue = calculate(text.text!) {
-        text.text = String(intValue)
-      } else {
-        text.text = "ERROR PRESS AC"
-      }
-      
-    default:
-      text.text! += buttonTitle
-    }
-    text.text = isValidExpression(text.text!)
-  }
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    text.text = "0"
-  }
-  
+  //입력된 문자열 유효성 검사
   func isValidExpression(_ label: String) -> String {
     var labelArray = Array(label)
     let labelLength = labelArray.count
@@ -64,7 +37,11 @@ class ViewController: UIViewController {
     return String(labelArray)
   }
   
+  //계산
   func calculate(_ expression: String) -> Int? {
+    if expression.count < 2 || !expression.last!.isNumber {
+      return nil
+    }
     let expression = NSExpression(format: expression)
     if let result = expression.expressionValue(with: nil, context: nil) as? Int {
       return result
@@ -73,4 +50,3 @@ class ViewController: UIViewController {
     }
   }
 }
-
